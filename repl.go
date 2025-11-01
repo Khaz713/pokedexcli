@@ -5,14 +5,17 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/Khaz713/pokedexcli/pokeapi"
 )
 
-type Config struct {
-	areaOffset int
+type config struct {
+	pokeapiClient   pokeapi.Client
+	nextLocationURL *string
+	prevLocationURL *string
 }
 
-func replStart() {
-	config := &Config{areaOffset: 0}
+func replStart(cfg *config) {
 	cliCommands := getCommands()
 	input := bufio.NewScanner(os.Stdin)
 	for {
@@ -26,7 +29,7 @@ func replStart() {
 		}
 
 		if _, ok := cliCommands[command[0]]; ok == true {
-			err := cliCommands[command[0]].callback(config)
+			err := cliCommands[command[0]].callback(cfg)
 			if err != nil {
 				fmt.Println(err)
 				continue
@@ -46,7 +49,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(config *Config) error
+	callback    func(config *config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -63,12 +66,12 @@ func getCommands() map[string]cliCommand {
 		},
 		"map": {
 			name:        "map",
-			description: "Displays map of 20 next areas",
-			callback:    commandMap,
+			description: "Get the next page of locations",
+			callback:    commandMapF,
 		},
 		"mapb": {
 			name:        "mapb",
-			description: "Displays map of 20 previous areas",
+			description: "Get the previous page of locations",
 			callback:    commandMapB,
 		},
 	}

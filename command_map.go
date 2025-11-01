@@ -3,17 +3,36 @@ package main
 import (
 	"fmt"
 
-	"github.com/Khaz713/pokedexcli/pokeApi"
+	"github.com/Khaz713/pokedexcli/pokeapi"
 )
 
-func commandMap(config *Config) error {
-	areas, err := pokeApi.GetLocationAreas(config.areaOffset)
+func commandMapF(config *config) error {
+	resp, err := pokeapi.GetLocationAreas(config.nextLocationURL)
 	if err != nil {
 		return err
 	}
-	for _, area := range areas {
+	config.nextLocationURL = resp.Next
+	config.prevLocationURL = resp.Previous
+	for _, area := range resp.Results {
 		fmt.Println(area.Name)
 	}
-	config.areaOffset += 20
 	return nil
+}
+
+func commandMapB(config *config) error {
+	if config.prevLocationURL == nil {
+		fmt.Println("You're on the first page")
+	} else {
+		resp, err := pokeapi.GetLocationAreas(config.prevLocationURL)
+		if err != nil {
+			return err
+		}
+		config.nextLocationURL = resp.Next
+		config.prevLocationURL = resp.Previous
+		for _, area := range resp.Results {
+			fmt.Println(area.Name)
+		}
+	}
+	return nil
+
 }

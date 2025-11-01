@@ -25,15 +25,13 @@ func TestCleanInput(t *testing.T) {
 	for _, c := range cases {
 		actual := cleanInput(c.input)
 		if len(actual) != len(c.expected) {
-			t.Errorf("Expected length %d(%v), got %d(%v)", len(c.expected), c.expected, len(actual), actual)
-			t.FailNow()
+			t.Fatalf("Expected length %d(%v), got %d(%v)", len(c.expected), c.expected, len(actual), actual)
 		}
 		for i := range actual {
 			word := actual[i]
 			expectedWord := c.expected[i]
 			if word != expectedWord {
-				t.Errorf("Expected word %s, got %s", expectedWord, word)
-				t.FailNow()
+				t.Fatalf("Expected word %s, got %s", expectedWord, word)
 			}
 		}
 	}

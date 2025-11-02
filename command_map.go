@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"github.com/Khaz713/pokedexcli/pokeapi"
+	"github.com/Khaz713/pokedexcli/internal/pokeapi"
 )
 
 func commandMapF(config *config) error {
-	resp, err := pokeapi.GetLocationAreas(config.nextLocationURL)
+	resp, err := pokeapi.GetLocationAreas(config.nextLocationURL, config.pokeapiClient.Cache)
 	if err != nil {
 		return err
 	}
@@ -23,7 +23,7 @@ func commandMapB(config *config) error {
 	if config.prevLocationURL == nil {
 		fmt.Println("You're on the first page")
 	} else {
-		resp, err := pokeapi.GetLocationAreas(config.prevLocationURL)
+		resp, err := pokeapi.GetLocationAreas(config.prevLocationURL, config.pokeapiClient.Cache)
 		if err != nil {
 			return err
 		}

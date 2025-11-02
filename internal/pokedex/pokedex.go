@@ -42,11 +42,9 @@ func (p *Pokedex) Get(key string) (Pokemon, bool) {
 
 }
 
-func (p Pokedex) List() []string {
-	p.mu.Lock()
-	defer p.mu.Unlock()
+func (p *Pokedex) List() []string {
 	result := make([]string, 0)
-	for k, _ := range p.pokemons {
+	for k := range p.pokemons {
 		result = append(result, k)
 	}
 	return result

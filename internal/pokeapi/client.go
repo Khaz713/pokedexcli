@@ -5,11 +5,13 @@ import (
 	"time"
 
 	"github.com/Khaz713/pokedexcli/internal/pokecache"
+	"github.com/Khaz713/pokedexcli/internal/pokedex"
 )
 
 type Client struct {
 	httpClient http.Client
 	Cache      *pokecache.Cache
+	Pokedex    *pokedex.Pokedex
 }
 
 func NewClient(timeout time.Duration, cacheInterval time.Duration) Client {
@@ -17,6 +19,7 @@ func NewClient(timeout time.Duration, cacheInterval time.Duration) Client {
 		httpClient: http.Client{
 			Timeout: timeout,
 		},
-		Cache: pokecache.NewCache(cacheInterval),
+		Cache:   pokecache.NewCache(cacheInterval),
+		Pokedex: pokedex.NewPokedex(),
 	}
 }

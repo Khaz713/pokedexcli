@@ -1,6 +1,30 @@
 package pokeapi
 
 type RespPokemon struct {
+	ID             int    `json:"id"`
+	Name           string `json:"name"`
+	Height         int    `json:"height"`
+	Weight         int    `json:"weight"`
+	BaseExperience int    `json:"base_experience"`
+	Types          []struct {
+		Slot int `json:"slot"`
+		Type struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"type"`
+	} `json:"types"`
+	Stats []struct {
+		BaseStat int `json:"base_stat"`
+		Effort   int `json:"effort"`
+		Stat     struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"stat"`
+	} `json:"stats"`
+	Forms []struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"forms"`
 	Abilities []struct {
 		Ability struct {
 			Name string `json:"name"`
@@ -9,14 +33,7 @@ type RespPokemon struct {
 		IsHidden bool `json:"is_hidden"`
 		Slot     int  `json:"slot"`
 	} `json:"abilities"`
-	BaseExperience int `json:"base_experience"`
-	Forms          []struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
-	} `json:"forms"`
-	Height int `json:"height"`
-	ID     int `json:"id"`
-	Moves  []struct {
+	Moves []struct {
 		Move struct {
 			Name string `json:"name"`
 			URL  string `json:"url"`
@@ -34,21 +51,4 @@ type RespPokemon struct {
 			} `json:"version_group"`
 		} `json:"version_group_details"`
 	} `json:"moves"`
-	Name  string `json:"name"`
-	Stats []struct {
-		BaseStat int `json:"base_stat"`
-		Effort   int `json:"effort"`
-		Stat     struct {
-			Name string `json:"name"`
-			URL  string `json:"url"`
-		} `json:"stat"`
-	} `json:"stats"`
-	Types []struct {
-		Slot int `json:"slot"`
-		Type struct {
-			Name string `json:"name"`
-			URL  string `json:"url"`
-		} `json:"type"`
-	} `json:"types"`
-	Weight int `json:"weight"`
 }

@@ -1,12 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
+	"io"
 	"strings"
 
 	"github.com/Khaz713/pokedexcli/internal/pokeapi"
+	"github.com/chzyer/readline"
 )
 
 type config struct {
@@ -17,12 +17,25 @@ type config struct {
 
 func replStart(cfg *config) {
 	cliCommands := getCommands()
-	input := bufio.NewScanner(os.Stdin)
-	for {
-		fmt.Print("Pokedex > ")
-		input.Scan()
 
-		inputString := input.Text()
+	rl, err := readline.NewEx(&readline.Config{
+		Prompt:       "Pokedex > ",
+		AutoComplete: &cfg.pokeapiClient,
+	})
+	if err != nil {
+		panic(err)
+	}
+	defer rl.Close()
+	for {
+
+		inputString, err := rl.Readline()
+		if err == io.EOF || err == readline.ErrInterrupt {
+			break
+		}
+		if err != nil {
+			fmt.Println("Error:", err)
+			continue
+		}
 		command := cleanInput(inputString)
 		if len(command) == 0 {
 			continue

@@ -7,6 +7,9 @@ import (
 )
 
 func commandExplore(param []string, config *config) error {
+	if len(param) < 2 {
+		return fmt.Errorf("explore <area_name>, area_name missing")
+	}
 	resp, err := pokeapi.GetLocationPokemon(param[1], config.pokeapiClient.Cache)
 	if err != nil {
 		return err

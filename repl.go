@@ -25,7 +25,12 @@ func replStart(cfg *config) {
 	if err != nil {
 		panic(err)
 	}
-	defer rl.Close()
+	defer func(rl *readline.Instance) {
+		err := rl.Close()
+		if err != nil {
+			panic(err)
+		}
+	}(rl)
 	for {
 
 		inputString, err := rl.Readline()
